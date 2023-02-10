@@ -14,7 +14,7 @@ pipeline {
                     extensions: [], 
                     submoduleCfg: [], 
                     userRemoteConfigs: [[credentialsId: '', 
-                    url: 'https://github.com/Niiqow/test.git']]
+                    url: 'https://github.com/Niiqow/test2.git']]
                 ])
                 sh 'npm install'
             }
