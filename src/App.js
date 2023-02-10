@@ -1,25 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App = () => {
+    const [animes, setAnimes] = useState([]);
+
+    useEffect(() => {
+        fetch('https://gogoanime.consumet.stream/recent-release')
+            .then(response => response.json())
+            .then(data => setAnimes(data));
+    }, []);
+
+    return (
+        <div>
+            <nav className="navbar navbar-light bg-light">
+                <span className="navbar-brand mb-0 h1">Animes</span>
+            </nav>
+            <div className="container my-5">
+                <h1 className="text-center">Animes</h1>
+                <div className="row">
+                    {animes.map(anime => (
+                        <div className="col-md-4 mb-3" key={anime.animeId}>
+                            <div className="card">
+                                <img src={anime.animeImg} className="card-img-top" alt={anime.animeTitle} style={{ height: "300px", objectFit: "cover" }} />
+                                <div className="card-body">
+                                    <h5 className="card-title">{anime.animeTitle}</h5>
+                                    <p className="card-text">Episodio {anime.episodeNum}</p>
+                                    <a key={anime.episodeId} target="_blank" href={anime.episodeUrl} className="btn btn-primary">Ver último episodio</a>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+};
 
 export default App;
