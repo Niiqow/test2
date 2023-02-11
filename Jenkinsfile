@@ -16,35 +16,29 @@ pipeline {
     stage('install') {
       steps {
         git branch: 'main', url: 'https://github.com/Niiqow/test2.git',
-      
-          sh 'npm install'
-        
+        sh 'npm install'
       }
     }
 
     stage('test') {
       steps {
-     
-          sh 'npm run test'
-        }
+        sh 'npm run test'
       }
     }
 
     stage('build') {
       steps {
-        
-          script {
-            try {
-              sh 'docker stop ${container_name}'
-              sh 'docker rm ${container_name}'
-              sh 'docker rmi ${image_name}:${tag_image}'
-            } catch (Exception e) {
-              echo 'Exception occurred: ' + e.toString()
-            }
+        script {
+          try {
+            sh 'docker stop ${container_name}'
+            sh 'docker rm ${container_name}'
+            sh 'docker rmi ${image_name}:${tag_image}'
+          } catch (Exception e) {
+            echo 'Exception occurred: ' + e.toString()
           }
-          sh 'npm run build'
-          sh 'docker build -t ${image_name}:${tag_image} .'
-        
+        }
+        sh 'npm run build'
+        sh 'docker build -t ${image_name}:${tag_image} .'
       }
     }
 
@@ -54,4 +48,5 @@ pipeline {
       }
     }
   }
+}
 
