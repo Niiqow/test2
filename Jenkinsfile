@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    environment {
+        DOCKER_HOME = "/usr/local/bin/docker"
+    }
 
     tools {
         nodejs "node"
