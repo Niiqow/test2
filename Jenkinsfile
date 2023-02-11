@@ -32,22 +32,6 @@ pipeline {
             }
         }
 
-        stage('Docker build') {
-            steps {
-                sh 'docker build -t jenkins/jenkins:lts .'
-            }
-        }
-
-        stage('Docker push') {
-            steps {
-                sh 'docker push jenkins/jenkins:lts'
-            }
-        }
-
-        stage('Deploy to production') {
-            steps {
-                sh 'docker run -d -p 80:80 jenkins/jenkins:lts'
-            }
-        }
+       
     }
 }
