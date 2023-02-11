@@ -14,27 +14,37 @@ pipeline {
 
   stages {
     stage('install') {
-  steps {
-    git branch: 'main', url: 'https://github.com/Niiqow/test2.git'
-    sh 'npm install'
-  }
-}
+      steps {
+        git branch: 'develop', url: 'https://github.com/LuisArana631/Taller_Jenkins.git'
+        dir('frontend') {
+          sh 'npm install'
+        }
+      }
+    }
 
-
+    stage('test') {
+      steps {
+        dir('frontend') {
+          sh 'npm run test'
+        }
+      }
+    }
 
     stage('build') {
       steps {
-        script {
-          try {
-            sh 'docker stop ${container_name}'
-            sh 'docker rm ${container_name}'
-            sh 'docker rmi ${image_name}:${tag_image}'
-          } catch (Exception e) {
-            echo 'Exception occurred: ' + e.toString()
+        dir('frontend') {
+          script {
+            try {
+              sh 'docker stop ${container_name}'
+              sh 'docker rm ${container_name}'
+              sh 'docker rmi ${image_name}:${tag_image}'
+            } catch (Exception e) {
+              echo 'Exception occurred: ' + e.toString()
+            }
           }
+          sh 'npm run build'
+          sh 'docker build -t ${image_name}:${tag_image} .'
         }
-        sh 'npm run build'
-        sh 'docker build -t ${image_name}:${tag_image} .'
       }
     }
 
@@ -44,5 +54,5 @@ pipeline {
       }
     }
   }
-}
 
+}
