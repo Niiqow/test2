@@ -1,15 +1,12 @@
 pipeline {
     agent any
-    environment {
-        DOCKER_HOME = "/usr/local/bin/docker"
-    }
 
     tools {
         nodejs "node"
     }
 
     stages {
-        stage('Install') {
+        stage('Checkout code') {
             steps {
                 checkout([$class: 'GitSCM', 
                     branches: [[name: '*/main']], 
@@ -19,35 +16,38 @@ pipeline {
                     userRemoteConfigs: [[credentialsId: '', 
                     url: 'https://github.com/Niiqow/test2.git']]
                 ])
+            }
+        }
+
+        stage('Install dependencies') {
+            steps {
                 sh 'npm install'
             }
         }
-   
 
-    stage('build') {
-      steps {
-      
-          script {
-            try {
-              sh 'docker stop ${container_name}'
-              sh 'docker rm ${container_name}'
-              sh 'docker rmi ${image_name}:${tag_image}'
-            } catch (Exception e) {
-              echo 'Exception occurred: ' + e.toString()
+        stage('Build and test') {
+            steps {
+                sh 'npm run build'
+                sh 'npm test'
             }
-          }
-          sh 'npm run build'
-          sh 'docker build -t ${image_name}:${tag_image} .'
-        
-      }
+        }
+
+        stage('Docker build') {
+            steps {
+                sh 'docker build -t jenkins/jenkins:lts .'
+            }
+        }
+
+        stage('Docker push') {
+            steps {
+                sh 'docker push jenkins/jenkins:lts'
+            }
+        }
+
+        stage('Deploy to production') {
+            steps {
+                sh 'docker run -d -p 80:80 jenkins/jenkins:lts'
+            }
+        }
     }
-
-    stage('deploy') {
-      steps {
-        sh 'docker run -d -p ${container_port}:80 --name ${container_name} ${image_name}:${tag_image}'
-      }
-    }
-     }
-  }
-
-
+}
