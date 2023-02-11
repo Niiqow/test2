@@ -14,11 +14,12 @@ pipeline {
 
   stages {
     stage('install') {
-      steps {
-        git branch: 'main', url: 'https://github.com/Niiqow/test2.git',
-        sh 'npm install'
-      }
-    }
+  steps {
+    git branch: 'main', url: 'https://github.com/Niiqow/test2.git'
+    sh 'npm install'
+  }
+}
+
 
     stage('test') {
       steps {
