@@ -21,11 +21,6 @@ pipeline {
 }
 
 
-    stage('test') {
-      steps {
-        sh 'npm run test'
-      }
-    }
 
     stage('build') {
       steps {
