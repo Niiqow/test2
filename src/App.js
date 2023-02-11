@@ -25,7 +25,9 @@ const App = () => {
                                 <div className="card-body">
                                     <h5 className="card-title">{anime.animeTitle}</h5>
                                     <p className="card-text">Episodio {anime.episodeNum}</p>
-                                    <a key={anime.episodeId} target="_blank" href={anime.episodeUrl} className="btn btn-primary">Ver último episodio</a>
+                                   
+
+                                    <a key={anime.episodeId} target="_blank" rel="noreferrer noopener" href={anime.episodeUrl} className="btn btn-primary">Ver último episodio</a>
                                 </div>
                             </div>
                         </div>
