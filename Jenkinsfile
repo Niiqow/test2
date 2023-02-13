@@ -15,7 +15,7 @@ pipeline {
   stages {
     stage('install') {
       steps {
-        git branch: 'develop', url: 'https://github.com/Niiqow/test2.git'
+        git branch: 'main', url: 'https://github.com/Niiqow/test2.git'
        
           sh 'npm install'
         
