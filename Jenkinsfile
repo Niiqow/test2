@@ -15,42 +15,42 @@ pipeline {
   stages {
     stage('install') {
       steps {
-        git branch: 'develop', url: 'https://github.com/LuisArana631/Taller_Jenkins.git'
-        dir('frontend') {
+        git branch: 'develop', url: 'https://github.com/Niiqow/test2.git'
+       
           sh 'npm install'
-        }
+        
       }
     }
 
     stage('test') {
       steps {
-        dir('frontend') {
+        
           sh 'npm run test'
-        }
+        
       }
     }
 
     stage('build') {
       steps {
-        dir('frontend') {
+        
           script {
             try {
-              sh 'docker stop ${container_name}'
-              sh 'docker rm ${container_name}'
-              sh 'docker rmi ${image_name}:${tag_image}'
+              sh '/usr/local/bin/docker stop ${container_name}'
+              sh '/usr/local/bin/docker rm ${container_name}'
+              sh '/usr/local/bin/docker rmi ${image_name}:${tag_image}'
             } catch (Exception e) {
               echo 'Exception occurred: ' + e.toString()
             }
           }
           sh 'npm run build'
-          sh 'docker build -t ${image_name}:${tag_image} .'
+          sh '/usr/local/bin/docker build -t ${image_name}:${tag_image} .'
         }
-      }
+      
     }
 
     stage('deploy') {
       steps {
-        sh 'docker run -d -p ${container_port}:80 --name ${container_name} ${image_name}:${tag_image}'
+        sh '/usr/local/bin/docker run -d -p ${container_port}:80 --name ${container_name} ${image_name}:${tag_image}'
       }
     }
   }
