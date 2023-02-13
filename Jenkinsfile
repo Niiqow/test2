@@ -2,8 +2,8 @@ pipeline {
   agent any
 
  tools {
-  node "node"
-}
+    nodejs "node"
+  }
 
   parameters {
     string(name: 'container_name', defaultValue: 'pagina_web', description: 'Nombre del contenedor de docker.')
