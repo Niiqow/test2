@@ -31,7 +31,7 @@ pipeline {
       
       }
     }
-//aaa
+//aaaa
     stage('deploy') {
       steps {
          sh "/usr/local/bin/docker rm -f ${container_name}" // Elimina el contenedor si existe
