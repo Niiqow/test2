@@ -5,13 +5,13 @@ pipeline {
       steps {
         git(branch: 'main', url: 'https://github.com/Niiqow/test2.git')
         sh 'npm install'
+        sh 'npm install react-scripts'
       }
     }
 
     stage('build') {
       steps {
         sh 'export PATH=$PATH:/Users/niiqow/.nvm/versions/node/v18.12.1/bin'
-        sh 'npm install react-scripts'
         sh 'npm run build'
         sh "/usr/local/bin/docker build -t ${image_name}:${tag_image} --file dockerfile ."
       }
