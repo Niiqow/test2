@@ -28,8 +28,8 @@ pipeline {
     PATH = "${env.PATH}:/Users/niiqow/.nvm/versions/node/v18.12.1/bin"
   }
   parameters {
-    string(name: 'container_name', defaultValue: 'pagina_web2', description: 'Nombre del contenedor de docker.')
-    string(name: 'image_name', defaultValue: 'pagina_img2', description: 'Nombre de la imagene docker.')
+    string(name: 'container_name', defaultValue: 'anime-info-dev', description: 'Nombre del contenedor de docker.')
+    string(name: 'image_name', defaultValue: 'anime-info-dev', description: 'Nombre de la imagene docker.')
     string(name: 'tag_image', defaultValue: 'lts', description: 'Tag de la imagen de la página.')
     string(name: 'container_port', defaultValue: '83', description: 'Puerto que usa el contenedor')
   }
