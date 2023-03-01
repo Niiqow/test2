@@ -1,30 +1,21 @@
-# Base image
-FROM node:latest
+# Imagen base
+FROM node:lts-alpine3.14
 
-# Set working directory
+# Establecer directorio de trabajo
 WORKDIR /app
 
-# Copy package.json and package-lock.json
+# Copiar archivos necesarios al contenedor
 COPY package*.json ./
+COPY public ./public
+COPY src ./src
 
-# Install dependencies
+# Instalar dependencias
 RUN npm install
-
-# Copy app files
-COPY . .
-
-# Build app
 RUN npm run build
 
-# Install serve for production build
+# Instalar serve
 RUN npm install -g serve
 
-# Expose port
-EXPOSE 90
-
-# Healthcheck
-HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
-  CMD curl -f http://localhost:${PORT:-90} || exit 1
-  
-# Start app
+# Establecer comando por defecto para ejecutar la aplicación con serve
 CMD ["serve", "-s", "build"]
+
