@@ -23,11 +23,12 @@ pipeline {
 
     stage('deploy') {
       steps {     
-        sh "docker rm -f ${container_name}" // Elimina el contenedor si existe
-        sh "docker create --name ${container_name} -p 90:90 ${image_name}:${tag_image}" // Crea el contenedor   
+        sh "docker rm -f ${container_name}" || true // Elimina el contenedor si existe o continúa si no existe
+        sh "docker create --name ${container_name} -p ${container_port}:90 ${image_name}:${tag_image}" // Crea el contenedor   
         sh "docker run -d -p ${container_port}:90 --name ${container_name} ${image_name}:${tag_image}"
       }
     }
   }
 }
+
 
