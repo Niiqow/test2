@@ -22,5 +22,9 @@ RUN npm install -g serve
 # Expose port
 EXPOSE 90
 
+# Healthcheck
+HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
+  CMD curl -f http://localhost:${PORT:-90} || exit 1
+  
 # Start app
 CMD ["serve", "-s", "build"]
