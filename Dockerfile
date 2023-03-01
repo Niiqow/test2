@@ -1,12 +1,26 @@
-FROM nginx:latest
-RUN apt-get update && apt-get install -y nodejs npm
-WORKDIR /usr/share/nginx/html
+# Base image
+FROM node:latest
 
+# Set working directory
+WORKDIR /app
+
+# Copy package.json and package-lock.json
+COPY package*.json ./
+
+# Install dependencies
 RUN npm install
+
+# Copy app files
+COPY . .
+
+# Build app
 RUN npm run build
 
-COPY ./build .
-COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+# Install serve for production build
+RUN npm install -g serve
 
-
+# Expose port
 EXPOSE 90
+
+# Start app
+CMD ["serve", "-s", "build"]
