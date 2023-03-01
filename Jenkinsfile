@@ -16,23 +16,18 @@ pipeline {
     }
 
     stage('build') {
-      steps {
-          
-        sh "docker rm -f ${container_name}" // Elimina el contenedor si existe
-        sh "docker create --name ${container_name} -p 90:90 ${image_name}:${tag_image}" // Crea el contenedor
-           
- 
-        sh "docker build -t ${image_name}:${tag_image} --file dockerfile ."
+      steps {       
+        sh "docker build -t ${image_name}:${tag_image} --file Dockerfile ."
       }
     }
 
     stage('deploy') {
-      steps {
-     
+      steps {     
+        sh "docker rm -f ${container_name}" // Elimina el contenedor si existe
+        sh "docker create --name ${container_name} -p 90:90 ${image_name}:${tag_image}" // Crea el contenedor   
         sh "docker run -d -p ${container_port}:90 --name ${container_name} ${image_name}:${tag_image}"
       }
     }
-
   }
-
 }
+
