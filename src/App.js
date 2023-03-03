@@ -5,7 +5,7 @@ const App = () => {
     const [animes, setAnimes] = useState([]);
 
     useEffect(() => {
-        fetch('https://gogoanime.consumet.stream/recent-release')
+        fetch('https://gogoanime.consumet.stream/popular')
             .then(response => response.json())
             .then(data => setAnimes(data));
     }, []);
@@ -16,7 +16,7 @@ const App = () => {
                 <span className="navbar-brand mb-0 h1">Animes_Info</span>
             </nav>
             <div className="container my-5">
-                <h1 className="text-center">Animes Info</h1>
+                <h1 className="text-center">Animes_Info</h1>
                 <div className="row">
                     {animes.map(anime => (
                         <div className="col-md-4 mb-3" key={anime.animeId}>
