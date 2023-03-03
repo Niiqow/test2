@@ -4,7 +4,7 @@ pipeline {
   parameters {
     string(name: 'container_name', defaultValue: 'test2', description: 'Nombre del contenedor de docker.')
     string(name: 'image_name', defaultValue: 'test2', description: 'Nombre de la imagen docker.')
-    string(name: 'tag_image', defaultValue: 'lts', description: 'Tag de la imagen de la página.')
+    string(name: 'tag_image', defaultValue: 'lts2', description: 'Tag de la imagen de la página.')
     string(name: 'container_port', defaultValue: '90', description: 'Puerto que usa el contenedor')
   }
   
