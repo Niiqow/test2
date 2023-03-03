@@ -11,6 +11,9 @@ pipeline {
   environment {
     DOCKERHUB_CREDENTIALS = credentials('task')
     DOCKERHUB_IMAGE = 'niiqow/task'
+    AZURE_MODEL = 'SOCIUSRGLAB-RG-MODELODEVOPS-DEV'
+    AZURE_PLAN = 'Plan-SociusRGLABRGModeloDevOpsDockerDev'
+    AZURE_NAME = 'sociuswebapptest008'
   }
   
   stages {
@@ -43,9 +46,8 @@ pipeline {
       steps {
         withCredentials(bindings: [azureServicePrincipal('Azure-Service-Principal')]) {
           sh 'curl -sL https://aka.ms/InstallAzureCLIDeb | bash'
-          sh 'export PATH=$PATH:/usr/local/bin'
           sh 'az login --service-principal -u ${AZURE_CLIENT_ID} -p ${AZURE_CLIENT_SECRET} --tenant ${AZURE_TENANT_ID}'
-          sh "az webapp create -g SOCIUSRGLAB-RG-MODELODEVOPS-DEV -p Plan-SociusRGLABRGModeloDevOpsDockerDev -n sociuswebapptest008 -i ${DOCKERHUB_IMAGE}:${tag_image}"
+          sh "az webapp create -g ${AZURE_MODEL} -p ${AZURE_PLAN} -n ${AZURE_NAME} -i ${DOCKERHUB_IMAGE}:${tag_image}"
         }
 
       }
