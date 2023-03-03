@@ -13,7 +13,7 @@ const App = () => {
     return (
         <div>
             <nav className="navbar navbar-light bg-light">
-                <span className="navbar-brand mb-0 h1">Animes Info</span>
+                <span className="navbar-brand mb-0 h1">Animes_Info</span>
             </nav>
             <div className="container my-5">
                 <h1 className="text-center">Animes Info</h1>
