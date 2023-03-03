@@ -1,5 +1,6 @@
 # Imagen base
 FROM node:lts-alpine3.14
+RUN apt-get update && apt-get install -y sudo
 
 # Establecer directorio de trabajo
 WORKDIR /app
@@ -10,7 +11,7 @@ COPY public ./public
 COPY src ./src
 
 # Instalar dependencias
-RUN npm install
+RUN npm install 
 RUN npm run build
 
 # Instalar serve
