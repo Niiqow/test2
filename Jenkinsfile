@@ -8,6 +8,11 @@ pipeline {
     string(name: 'container_port', defaultValue: '90', description: 'Puerto que usa el contenedor')
   }
   
+  environment {
+    DOCKERHUB_CREDENTIALS = credentials('task')
+    DOCKERHUB_IMAGE = 'niiqow/task'
+  }
+  
   stages {
     stage('install') {
       steps {
@@ -20,15 +25,33 @@ pipeline {
         sh "docker build -t ${image_name}:${tag_image} --file Dockerfile ."
       }
     }
-
-    stage('deploy') {
-      steps {     
-        sh "docker rm -f ${container_name}" || true // Elimina el contenedor si existe o continúa si no existe
-        sh "docker create --name ${container_name} -p ${container_port}:90 ${image_name}:${tag_image}" // Crea el contenedor   
-        sh "docker run -d -p ${container_port}:90 --name ${container_name} ${image_name}:${tag_image}"
+    
+    stage('Login to DockerHUB') {
+      steps {
+          sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password dckr_pat_ReBPx0jgG6Dia-ZKMhab9fpcif4'
       }
     }
+
+    stage('Push to DockerHUB') {
+      steps {
+        sh "docker tag ${image_name}:${tag_image} ${DOCKERHUB_IMAGE}:${tag_image}"
+        sh "docker push ${DOCKERHUB_IMAGE}:${tag_image}"
+      }
+    }
+    
+   stage('Deploy to Azure App Service') {
+      steps {
+        withCredentials(bindings: [azureServicePrincipal('Azure-Service-Principal')]) {
+          sh 'curl -sL https://aka.ms/InstallAzureCLIDeb | bash'
+          sh 'export PATH=$PATH:/usr/local/bin'
+          sh 'az login --service-principal -u ${AZURE_CLIENT_ID} -p ${AZURE_CLIENT_SECRET} --tenant ${AZURE_TENANT_ID}'
+          sh "az webapp create -g SOCIUSRGLAB-RG-MODELODEVOPS-DEV -p Plan-SociusRGLABRGModeloDevOpsDockerDev -n sociuswebapptest008 -i ${DOCKERHUB_IMAGE}:${tag_image}"
+        }
+
+      }
+    }
+
+    
+    
   }
 }
-
-
