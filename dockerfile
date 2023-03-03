@@ -1,5 +1,5 @@
 FROM nginx:latest
-RUN apt-get update && apt-get install -y nodejs npm
+RUN apt-get update && apt-get install -y sudo nodejs npm
 WORKDIR /usr/share/nginx/html
 
 
