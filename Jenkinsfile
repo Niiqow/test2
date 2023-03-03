@@ -22,6 +22,11 @@ pipeline {
         git(branch: 'develop', url: 'https://github.com/Niiqow/test2.git')
       }
     }
+ stage('Login to DockerHUB') {
+      steps {
+          sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password dckr_pat_ReBPx0jgG6Dia-ZKMhab9fpcif4'
+      }
+    }
 
     stage('build') {
       steps {       
@@ -29,12 +34,7 @@ pipeline {
       }
     }
     
-    stage('Login to DockerHUB') {
-      steps {
-          sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password dckr_pat_ReBPx0jgG6Dia-ZKMhab9fpcif4'
-      }
-    }
-
+   
     stage('Push to DockerHUB') {
       steps {
         sh "docker tag ${image_name}:${tag_image} ${DOCKERHUB_IMAGE}:${tag_image}"
