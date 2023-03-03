@@ -1,6 +1,6 @@
 # Imagen base
 FROM node:lts-alpine3.14
-RUN apt-get update && apt-get install -y sudo
+
 
 # Establecer directorio de trabajo
 WORKDIR /app
